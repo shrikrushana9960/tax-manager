@@ -43,7 +43,7 @@ const Login = ({history}) => {
 
   return (
     <CustomLayout>
-      <Form
+       <Form
         name="normal_login"
         initialValues={{remember: true}}
       >
