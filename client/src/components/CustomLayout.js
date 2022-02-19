@@ -10,7 +10,7 @@ const CustomLayout = (props) => {
       display: "flex",
       alignItems: "center"
     }}>
-      <Title level={3} style={{color: "white", margin: 0}}> React Redux Template </Title>
+      <Title level={3} style={{color: "white", margin: 0}}> Tax System </Title>
     </Header>
     <Content
       style={{
