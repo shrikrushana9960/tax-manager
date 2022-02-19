@@ -3,25 +3,41 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-require('dotenv').config();
-
+const { getStates, authorise } = require("./src/handlers/stateHandlers");
+const {
+  getTaxEntries,
+  makePayment,
+  createTaxEntry,
+} = require("./src/handlers/taxEntryHandler");
+require("dotenv").config();
 const mongoose = require("mongoose");
 const User = require("./src/models/User");
 const withAuth = require("./src/middleware/middleware");
 const {
-  authenticate, logout, extractUserDetails, internalServerError, logger
+  authenticate,
+  logout,
+  extractUserDetails,
+  internalServerError,
+  logger,
+  getUserDetails,
 } = require("./src/handlers/handlers");
-
-const mongo_uri = process.env.MONGODB_URI
-const PORT = process.env.PORT
+const {
+  getTaxAccountants,
+  getTaxPayers,
+  registerTaxPayer,
+  registerTaxAccountant,
+} = require("./src/handlers/userHandler");
+const { Role } = require("./src/models/utils");
+const mongo_uri = process.env.MONGODB_URI;
+const PORT = process.env.PORT;
 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger);
 
-mongoose.connect(mongo_uri, {useNewUrlParser: true}, function (err) {
+mongoose.connect(mongo_uri, { useNewUrlParser: true }, function (err) {
   if (err) {
     throw err;
   } else {
@@ -34,8 +50,8 @@ app.listen(PORT, () => {
 });
 
 app.post("/api/signup", function (req, res) {
-  const {name, email, password} = req.body;
-  const user = new User({name, email, password});
+  const { name, email, password, role } = req.body;
+  const user = new User({ name, email, password, role });
   user.save(function (err) {
     if (err) {
       internalServerError(res, "Error registering new user");
@@ -45,9 +61,56 @@ app.post("/api/signup", function (req, res) {
   });
 });
 
-app.post("/api/authenticate", extractUserDetails, authenticate);
+app.post("/api/authenticate", getUserDetails.bind(null, null), authenticate);
 app.post("/api/logout", logout);
-app.get('/checkToken', withAuth, function (req, res) {
+app.get("/checkToken", withAuth, function (req, res) {
   res.sendStatus(200);
 });
-app.use(extractUserDetails);
+
+app.get(
+  "/states",
+  extractUserDetails,
+  authorise.bind(null, [Role.ADMIN, Role.TAX_ACCOUNTANT], getStates)
+);
+
+app.post(
+  "/tax-payer/register",
+  extractUserDetails,
+  authorise.bind(null, [Role.TAX_ACCOUNTANT], registerTaxPayer)
+);
+
+app.post(
+  "/tax-accountant/register",
+  extractUserDetails,
+  authorise.bind(null, [Role.ADMIN], registerTaxAccountant)
+);
+
+app.get(
+  "/taxAccountants",
+  extractUserDetails,
+  authorise.bind(null, [Role.ADMIN], getTaxAccountants)
+);
+
+app.post(
+  "/taxEntry",
+  extractUserDetails,
+  authorise.bind(null, [Role.TAX_ACCOUNTANT], createTaxEntry)
+);
+
+app.get(
+  "/taxEntries",
+  extractUserDetails,
+  authorise.bind(null, [Role.TAX_ACCOUNTANT, Role.TAX_PAYER], getTaxEntries)
+);
+
+app.get(
+  "/taxPayers",
+  extractUserDetails,
+  authorise.bind(null, [Role.TAX_ACCOUNTANT], getTaxPayers)
+);
+
+app.post(
+  "/taxEntries/:entryId/pay",
+  extractUserDetails,
+  authorise.bind(null, [Role.TAX_PAYER], makePayment)
+);
