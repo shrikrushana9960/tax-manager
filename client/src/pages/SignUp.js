@@ -12,9 +12,9 @@ const SignUp = ({history}) => {
   const [password, setPassword] = useState("");
   const onSubmit = (event) => {
     event.preventDefault();
-    fetch("/api/signup", {
+    fetch("/api/authenticate", {
       method: "POST",
-      body: JSON.stringify({name, email, password}),
+      body: JSON.stringify({ name, email, password, role: "ADMIN" }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -117,7 +117,7 @@ const SignUp = ({history}) => {
           <Button type={"primary"} onClick={onSubmit} block>
             Create Account
           </Button>
-          Already have an account? <Link to="/login">Log in</Link>
+         
         </Form.Item>
       </Form>
     </CustomLayout>

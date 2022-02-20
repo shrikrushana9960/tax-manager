@@ -1,9 +1,37 @@
 import React from 'react'
-import { Layout, Table, Tag, Space, Typography, Divider, Button } from "antd";
+import { Layout, Table, Tag, Space, Typography, Divider, Button,Select } from "antd";
 import { useHistory } from "react-router-dom";
 
 const TaxAccountantBoard = () => {
+  const [taxpayer,setTaxPayer]=React.useState([]);
+  const data = [
+    {
+      id: 1,
+      name: "John Brown",
+      totaltax: 3200,
+      lastdate: "10-sep-2020",
+      status: "paid",
+    },
+    {
+      id: 2,
+      name: "shri",
+      totaltax: 3200,
+      lastdate: "10-sep-2020",
+      status: "overdue",
+    },
+    {
+      id: 3,
+      name: "ajay",
+      totaltax: 3200,
+      lastdate: "10-sep-2020",
+      status: "pending",
+    },
+  ];
+  React.useEffect(()=>{
+    setTaxPayer(data)
+  },[])
     let history = useHistory();
+    const { Option } = Select;
     const { Title } = Typography;
 const { Content, Header } = Layout;
 const columns = [
@@ -46,29 +74,7 @@ const columns = [
     ),
   },
 ];
-const data   = [
-  {
-    id: 1,
-    name: "John Brown",
-    totaltax: 3200,
-    lastdate: "10-sep-2020",
-    status: "paid",
-  },
-  {
-    id: 2,
-    name: "shri",
-    totaltax: 3200,
-    lastdate: "10-sep-2020",
-    status: "overdue",
-  },
-  {
-    id: 3,
-    name: "ajay",
-    totaltax: 3200,
-    lastdate: "10-sep-2020",
-    status: "pending",
-  },
-];
+
 
 const logout = (event) => {
   event.preventDefault();
@@ -104,9 +110,25 @@ const logout = (event) => {
         </Button>
       </Header>
       <div style={{ padding: "5%" }}>
-        <Divider orientation="left">Tax Payers</Divider>
+        <Divider orientation="left">
+          Tax Payers{" "}
+          <div> 
+            <Select
+              placeholder="Filter"
+              onChange={(e)=>{
+                
+                setTaxPayer(data.filter(value=>value.status===e))
+              }}
+              allowClear
+            >
+              <Option value="pending">pending</Option>
+              <Option value="paid">paid</Option>
+              <Option value="overdue">Overdue</Option>
+            </Select>
+          </div>
+        </Divider>
 
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={taxpayer} />
       </div>
     </div>
   );

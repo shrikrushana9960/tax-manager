@@ -9,7 +9,9 @@ const withAuth = (ComponentToProtect) => {
     useEffect(() => {
       fetch('/checkToken')
         .then(res => {
+        
           if (res.status === 200) {
+          
             setLoading(false);
           } else {
             throw new Error(res.error);

@@ -25,6 +25,7 @@ const Login = ({history}) => {
     })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res)
           history.push("/home");
         } else {
           throw new Error(res.error);
@@ -32,6 +33,7 @@ const Login = ({history}) => {
         return res.json();
       })
       .then((res) => {
+        console.log(res)
         dispatch(setName(res.name));
         dispatch(setEmail(email));
       })

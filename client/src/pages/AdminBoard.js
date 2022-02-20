@@ -1,12 +1,13 @@
 import React from 'react'
-import { Layout,List, Typography, Divider,Button,Table,Tag,Space } from 'antd';
+import { Layout,List, Typography, Divider,Button,Table,Tag,Space,Select } from 'antd';
 import { useHistory } from "react-router-dom";
 
 const AdminBoard = () => {
     let history = useHistory();
-  
+   const { Option } = Select;
     const { Title } = Typography;
 const { Content, Header } = Layout;
+const [taxpayer, setTaxPayer] = React.useState([]);
  const columns = [
    {
      title: "Name",
@@ -49,6 +50,7 @@ const { Content, Header } = Layout;
      ),
    },
  ];
+ 
  const data2 = [
    {
      id: 1,
@@ -79,6 +81,9 @@ const { Content, Header } = Layout;
   'anil',
   'jadu',
 ];
+ React.useEffect(() => {
+   setTaxPayer(data2);
+ }, []);
 const logout = (event) => {
   event.preventDefault();
   fetch("/api/logout", {
@@ -126,9 +131,25 @@ const logout = (event) => {
             </List.Item>
           )}
         />
-        <Divider orientation="left">Tax Payers</Divider>
+        <Divider orientation="left">
+          Tax Payers{" "}
+          <div>
+            <Select
+              placeholder="Filter"
+              onChange={(e) => {
+                setTaxPayer(data2.filter((value) => value.status === e));
+              }}
+              allowClear
+            >
+              <Option value="pending">pending</Option>
+              <Option value="paid">paid</Option>
+              <Option value="overdue">Overdue</Option>
+            </Select>
+          </div>
+        </Divider>
 
-        <Table columns={columns} dataSource={data2} />
+        <Table columns={columns} dataSource={taxpayer} />
+        <Button>Add Tax Payer</Button>
       </div>
     </div>
   );
