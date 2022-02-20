@@ -32,7 +32,7 @@ const authenticate = (req, res) => {
       res
         .status(200)
         .cookie("token", token, { httpOnly: true })
-        .json({ name: user.name, role: user.role });
+        .json({ name: user.name, role: user.role, token: token });
     }
   });
 };
@@ -56,7 +56,7 @@ const extractUserDetails = (request, response, next) => {
     console.log("decoded emaail" + decoded.email);
     let email = decoded.email;
     return getUserDetails(email, request, response, next);
-  }); 
+  });
 };
 
 const logout = function (req, res) {
