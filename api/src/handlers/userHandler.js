@@ -70,14 +70,14 @@ const registerTaxPayer = (req, res) => {
 };
 
 const registerTaxAccountant = (req, res) => {
-  const { name, email, state, panNumber, password } = req.body;
+  const { name, email, stateId, panNumber, password } = req.body;
   const user = new User({
     email,
     name,
     password,
     role: Role.TAX_ACCOUNTANT,
     taxPayerIds: [],
-    state,
+    stateId,
     panNumber,
   });
   user.save(function (err) {
