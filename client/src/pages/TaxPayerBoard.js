@@ -45,10 +45,10 @@ const TaxAccountantBoard = () => {
         <Divider orientation="left">Tax Payers</Divider>
 
         <Title level={2} style={{ margin: 0 }}>
-          Welcome Shri
+          Welcome User
         </Title>
-        <p style={{  margin: 0 }}> Your Tax for month April 2002  is remaning</p>
-        <Button type={"primary"}>Pay Tax</Button>
+        <p style={{  margin: 0 }}> Your Tax  is remaning</p>
+        <Button type={"primary"} onClick={()=>history.push("/payment")}>Pay Tax</Button>
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 import React from 'react'
-import { Layout, Table, Tag, Space, Typography, Divider, Button,Select } from "antd";
+import { Layout, Table, Tag, Space, Typography, Divider, Button,Select,message } from "antd";
 import { useHistory } from "react-router-dom";
+import FillData from '../components/FillData';
 
 const TaxAccountantBoard = () => {
   const [taxpayer,setTaxPayer]=React.useState([]);
+  const [client,setClient]=React.useState([]);
   const data = [
     {
       id: 1,
@@ -29,6 +31,26 @@ const TaxAccountantBoard = () => {
   ];
   React.useEffect(()=>{
     setTaxPayer(data)
+    const getData=async()=>{
+       fetch("/taxPayers")
+         .then((res) => {
+           if (res.status === 200) {
+            
+           } else {
+             throw new Error(res.error);
+           }
+           return res.json();
+         })
+         .then((res) => {
+           setClient(res)
+         })
+         .catch((err) => {
+           console.error(err);
+           message.error("Error  in  Data please try again");
+         });
+      
+    }
+    getData()
   },[])
     let history = useHistory();
     const { Option } = Select;
@@ -74,6 +96,29 @@ const columns = [
     ),
   },
 ];
+const columns2 = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: "email",
+    dataIndex: "email",
+    key: "email",
+  },
+ 
+  {
+    title: "Action",
+    key: "action",
+    render: (text, record) => (
+      <Space size="middle">
+        <FillData email={record.email}/>
+      </Space>
+    ),
+  },
+];
 
 
 const logout = (event) => {
@@ -109,15 +154,22 @@ const logout = (event) => {
           Logout
         </Button>
       </Header>
+      <Button onClick={() => history.push("/create-tax-payer")}>
+        Create Client
+      </Button>
+      <div style={{ padding: "5%" }}>
+        <Divider orientation="left">Client </Divider>
+
+        <Table columns={columns2} dataSource={client} />
+      </div>
       <div style={{ padding: "5%" }}>
         <Divider orientation="left">
           Tax Payers{" "}
-          <div> 
+          <div>
             <Select
               placeholder="Filter"
-              onChange={(e)=>{
-                
-                setTaxPayer(data.filter(value=>value.status===e))
+              onChange={(e) => {
+                setTaxPayer(data.filter((value) => value.status === e));
               }}
               allowClear
             >

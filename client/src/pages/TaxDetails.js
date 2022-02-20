@@ -45,7 +45,7 @@ const CreateTaxAccountant = ({ history }) => {
     <CustomLayout>
       <Form name="normal_login" initialValues={{ remember: true }}>
         <Title level={4} style={{ textAlign: "center" }}>
-          Shrikrushana Tax details
+         Tax details
         </Title>
         <Form.Item
           name="income"

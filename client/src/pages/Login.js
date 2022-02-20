@@ -26,7 +26,7 @@ const Login = ({history}) => {
       .then((res) => {
         if (res.status === 200) {
           console.log(res)
-          history.push("/home");
+         
         } else {
           throw new Error(res.error);
         }
@@ -34,8 +34,18 @@ const Login = ({history}) => {
       })
       .then((res) => {
         console.log(res)
+        localStorage.setItem("token",res.token)
+        localStorage.setItem("email",email);
+        localStorage.setItem("password",password)
         dispatch(setName(res.name));
         dispatch(setEmail(email));
+        if(res.role==="ADMIN")
+        history.push("/adminboard");
+         if(res.role==="TAX_ACCOUNTANT")
+         history.push("/taxaccoutantboard");
+         if(res.role==="TAX_PAYER")
+        history.push("/taxpayerboard");
+
       })
       .catch((err) => {
         console.error(err);
@@ -86,7 +96,7 @@ const Login = ({history}) => {
           <Button type={"primary"} onClick={onSubmit} block>
             Log In
           </Button>
-          Don't have an account? <Link to="/signup">Create One</Link>
+         
         </Form.Item>
       </Form>
     </CustomLayout>

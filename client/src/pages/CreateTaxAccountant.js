@@ -1,24 +1,37 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Form, Input, message, Typography,Select } from "antd";
 import { UserOutlined, MailTwoTone } from "@ant-design/icons";
 import CustomLayout from "../components/CustomLayout";
 import { useDispatch } from "react-redux";
 import { setEmail, setName } from "../actions/actions";
-
+const { Option } = Select;
 const { Title } = Typography;
 
 const CreateTaxAccountant = ({ history }) => {
   const [email, setLocalEmail] = useState("");
   const [name, setName] = useState("");
-
+  const [password,setPassword]=useState("");
+  const [livestate,setliveState]=useState("");
+  const [pan,setPan]=useState("");
   const dispatch = useDispatch();
 
   const onSubmit = (event) => {
     event.preventDefault();
-    fetch("/api/authenticate", {
+    fetch("/tax-accountant/register", {
       method: "POST",
-      body: JSON.stringify({ email,name }),
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        role: "TAX_ACCOUNTANT",
+        stateId: livestate,
+        panNumber: pan,
+        password,
+        taxPayerIds: [],
+      }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,12 +81,9 @@ const CreateTaxAccountant = ({ history }) => {
           name="name"
           rules={[
             {
-              required: true,
-              type: "name",
               message: "Please enter Name!",
             },
           ]}
-          hasFeedback
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -81,7 +91,55 @@ const CreateTaxAccountant = ({ history }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </Form.Item>
+        <Form.Item
+          name="state"
+          rules={[
+            {
+              required: true,
 
+              message: "Please enter state!",
+            },
+          ]}
+        >
+          <Select
+            placeholder="state"
+            onChange={(e) => {
+              setliveState(e);
+            }}
+            allowClear
+          >
+            <Option value="goa">Goa</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="Pan"
+          rules={[
+            {
+              message: "Please enter Pan Number!",
+            },
+          ]}
+        >
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Pan Number"
+            onChange={(e) => setPan(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please enter your Password!",
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Item>
         <Form.Item>
           <Button type={"primary"} onClick={onSubmit} block>
             Create Tax Accountant

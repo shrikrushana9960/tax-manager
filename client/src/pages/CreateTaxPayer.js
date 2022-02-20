@@ -1,38 +1,44 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Input, message, Typography,Select, } from "antd";
-import {
-  UserOutlined,
-  MailTwoTone,
-  CreditCardOutlined,
-} from "@ant-design/icons";
+import { Button, Form, Input, message, Typography, Select } from "antd";
+import { UserOutlined, MailTwoTone } from "@ant-design/icons";
 import CustomLayout from "../components/CustomLayout";
 import { useDispatch } from "react-redux";
 import { setEmail, setName } from "../actions/actions";
-
+const { Option } = Select;
 const { Title } = Typography;
 
 const CreateTaxPayer = ({ history }) => {
-  const { Option } = Select;
   const [email, setLocalEmail] = useState("");
   const [name, setName] = useState("");
-  const [pan,setPan]=useState("");
-  const [liveState,useliveState]=("");
-
+  const [password, setPassword] = useState("");
+  const [livestate, setliveState] = useState("");
+  const [pan, setPan] = useState("");
   const dispatch = useDispatch();
 
   const onSubmit = (event) => {
     event.preventDefault();
-    fetch("/api/authenticate", {
+    fetch("/tax-payer/register", {
       method: "POST",
-      body: JSON.stringify({ email,name,pan,liveState }),
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        role: "TAX_PAYER",
+        stateId: livestate,
+        panNumber: pan,
+        password,
+        taxPayerIds: [],
+      }),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((res) => {
         if (res.status === 200) {
-          history.push("/adminboard");
+          history.push("/taxpayerboard");
         } else {
           throw new Error(res.error);
         }
@@ -44,7 +50,7 @@ const CreateTaxPayer = ({ history }) => {
       })
       .catch((err) => {
         console.error(err);
-        message.error("Error in register please try again");
+        message.error("Error Resgister in please try again");
       });
   };
 
@@ -52,7 +58,7 @@ const CreateTaxPayer = ({ history }) => {
     <CustomLayout>
       <Form name="normal_login" initialValues={{ remember: true }}>
         <Title level={4} style={{ textAlign: "center" }}>
-          Create Tax Accountant
+          Create Tax Payer
         </Title>
         <Form.Item
           name="email"
@@ -75,12 +81,9 @@ const CreateTaxPayer = ({ history }) => {
           name="name"
           rules={[
             {
-              required: true,
-              type: "name",
               message: "Please enter Name!",
             },
           ]}
-          hasFeedback
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -89,37 +92,54 @@ const CreateTaxPayer = ({ history }) => {
           />
         </Form.Item>
         <Form.Item
-          name="pancard"
+          name="state"
           rules={[
             {
               required: true,
-              type: "pancard",
-              message: "Please enter Pancard!",
+
+              message: "Please enter state!",
             },
           ]}
-          hasFeedback
+        >
+          <Select
+            placeholder="state"
+            onChange={(e) => {
+              setliveState(e);
+            }}
+            allowClear
+          >
+            <Option value="goa">Goa</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="Pan"
+          rules={[
+            {
+              message: "Please enter Pan Number!",
+            },
+          ]}
         >
           <Input
-            prefix={<CreditCardOutlined  className="site-form-item-icon" />}
-            placeholder="PanCard Number"
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Pan Number"
             onChange={(e) => setPan(e.target.value)}
           />
         </Form.Item>
         <Form.Item
-          name="livestate"
-         
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please enter your Password!",
+            },
+          ]}
         >
-          <Select
-            placeholder="State"
-            onChange={(e) => setPan(e.target.value)}
-            allowClear
-          >
-            <Option value="male">male</Option>
-            <Option value="female">female</Option>
-            <Option value="other">other</Option>
-          </Select>
+          <Input.Password
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Item>
-
         <Form.Item>
           <Button type={"primary"} onClick={onSubmit} block>
             Create Tax Payer
