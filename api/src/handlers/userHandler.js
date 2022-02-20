@@ -37,11 +37,11 @@ const getTaxPayers = (req, res) => {
 };
 
 const registerTaxPayer = (req, res) => {
-  const { name, email, state, panNumber, password, user } = req.body;
+  const { name, email, stateId, panNumber, password, user } = req.body;
   const taxPayer = new User({
     name,
     email,
-    state,
+    stateId,
     password,
     role: Role.TAX_PAYER,
     panNumber,
