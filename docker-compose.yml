@@ -1,0 +1,37 @@
+version: "3"
+services:
+  api:
+    build: ./api
+    environment:
+            - MONGODB_URI=mongodb://tax-manager-db:27017/taxManager
+            - NODE_ENV=dev
+            - PORT=4001
+            - JWT_SECRET=mytestsecret
+    ports:
+      - "4001:4001"
+    depends_on:
+      - db
+    container_name: tax-manager-api
+    networks:
+      - tax-manager-network
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    links:
+      - "api"
+    stdin_open: true
+    container_name: tax-manager-client
+    networks:
+      - tax-manager-network
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: tax-manager-db
+    networks:
+      - tax-manager-network
+
+networks:
+    tax-manager-network:
+        driver: bridge

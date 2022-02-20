@@ -9,10 +9,7 @@ const getTaxEntries = function (req, res) {
   if (req.body.user.role == Role.TAX_PAYER) {
     return getTaxEntriesFor(req.body.user.email, res);
   } else {
-    // const taxEntries = req.body.user.taxPayerIds.map((taxPayerId) => {
     return getTaxEntriesForAll(req.body.user.taxPayerIds, res);
-    // });
-    // return res.status(200).send(taxEntries);
   }
 };
 
