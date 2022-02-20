@@ -20,7 +20,6 @@ UserSchema.pre("save", function (next) {
       if (err) {
         next(err);
       } else {
-        console.log("passsword before saving" + this.password);
         document.password = hashedPassword;
         // document.password = this.password;
         next();
@@ -32,8 +31,6 @@ UserSchema.pre("save", function (next) {
 });
 
 UserSchema.methods.isCorrectPassword = function (password, callback) {
-  console.log("This passwor dis : " + this.password);
-  console.log("Password is: " + password);
   bcrypt.compare(password, this.password, function (err, same) {
     // if (err) {
     //   callback(err);

@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
@@ -12,6 +13,7 @@ const {
 require("dotenv").config();
 const mongoose = require("mongoose");
 const User = require("./src/models/User");
+const State = require("./src/models/State");
 const withAuth = require("./src/middleware/middleware");
 const {
   authenticate,
@@ -37,18 +39,21 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger);
 
-mongoose.connect(mongo_uri, { useNewUrlParser: true }, function (err) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(`Successfully connected to ${mongo_uri}`);
-  }
-});
+if (process.env.NODE_ENV != "test") {
+  mongoose.connect(mongo_uri, { useNewUrlParser: true }, function (err) {
+    if (err) {
+      throw err;
+    } else {
+      console.log(`Successfully connected to ${mongo_uri}`);
+    }
+  });
+}
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("listening on", PORT);
 });
 
+app.get("/healthcheck", (req, res) => res.send({ status: "UP" }).status(200));
 app.post("/api/signup", function (req, res) {
   const { name, email, password, role } = req.body;
   const user = new User({ name, email, password, role });
@@ -114,3 +119,29 @@ app.post(
   extractUserDetails,
   authorise.bind(null, [Role.TAX_PAYER], makePayment)
 );
+
+const createDefaultUsers = () => {
+  const path = "./.deploy/users.json";
+  fs.readFile(path, "utf8", function (err, data) {
+    if (err) return console.error(err);
+    const usersConf = JSON.parse(data);
+    usersConf.users.forEach((user) => User.create(user));
+  });
+};
+const createStates = () => {
+  const path = "./.deploy/states.json";
+  fs.readFile(path, "utf8", function (err, data) {
+    if (err) return console.error(err);
+    const stateConf = JSON.parse(data);
+    stateConf.states.forEach((state) => State.create(state));
+  });
+};
+
+const startup = () => {
+  createDefaultUsers();
+  createStates();
+};
+
+startup();
+
+module.exports = { app, server };

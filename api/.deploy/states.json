@@ -1,0 +1,82 @@
+{
+  "states": [
+    {
+      "stateId": "goa",
+      "name": "Goa",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "maharashtra",
+      "name": "Maharashtra",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "karnataka",
+      "name": "Karnataka",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "delhi",
+      "name": "Delhi",
+      "isUnionTerritory": true,
+      "stateTax": 6
+    },
+    {
+      "stateId": "telangana",
+      "name": "Telangana",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "tamilnadu",
+      "name": "Tamilnadu",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "uttarakhand",
+      "name": "Uttarakhand",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "gujrat",
+      "name": "Gujrat",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "haryana",
+      "name": "Haryana",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "rajasthan",
+      "name": "Rajasthan",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "aasam",
+      "name": "Aassam",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "madhyapradesh",
+      "name": "Madhya Pradesh",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    },
+    {
+      "stateId": "uttarpradesh",
+      "name": "Uttar Pradesh",
+      "isUnionTerritory": false,
+      "stateTax": 6
+    }
+  ]
+}

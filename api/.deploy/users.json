@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "name": "Admin",
+      "email": "admin@gmail.com",
+      "password": "$2b$10$eSaWdJ2RiQefs2W50.S5/.3aav5of2tozE.OvbBWD8tVdS942eMXW",
+      "role": "ADMIN",
+      "taxPayerIds": [],
+      "panNumber": "IJRP120",
+      "stateId": "goa"
+    }
+  ]
+}
