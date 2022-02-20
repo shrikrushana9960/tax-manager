@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile-alternate
+    command: npm run test
+    environment:
+            - MONGODB_URI=mongodb://tax-manager-test-db:27017/taxManager
+            - NODE_ENV=test
+            - PORT=4001
+            - JWT_SECRET=mytestsecret 
+    depends_on:
+      - db
+    container_name: tax-manager-api-test
+    networks:
+      - tax-manager-test-network
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: tax-manager-test-db
+    networks:
+      - tax-manager-test-network
+
+networks:
+    tax-manager-test-network:
+        driver: bridge
