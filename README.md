@@ -22,6 +22,12 @@ admin credential
 email: admin@gmail.com
 passowrd:admin
 Core infrastructure:
+`````
+User flow
+`````
+admin - create accountant 
+Acccount- create tax payer
+Tax Payer- paying tax
 
 1. You can do this in any language. We dont care - language is just a tool. Work here is done primarily on python and reactjs (which you can learn if you join). At no point do we argue over the superiority of python over other languages. Its just a tool we ended up using and serves us well.
 2. You will deliver your work as a Docker project. At RedCarpet we value seamless packaging of software to make it easy to develop and use. We expect you to do the same. Learning Docker isnt very hard. It takes an hour at most. Some examples are - https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ , https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/ , https://www.fullstackpython.com/blog/develop-flask-web-apps-docker-containers-macos.html, https://medium.com/@jhh3/all-the-small-things-86a8f2b3f67. You dont need to create an image and upload to a registry, just make sure the Dockerfiles work well. We will ONLY run your code through Docker. You should also specify how to run your testcases through Docker.
