@@ -17,7 +17,10 @@ Start the application in docker
 ```
 docker-compose -p 3000:3000 up --force-recreate
 ```
-
+```
+admin credential 
+email: admin@gmail.com
+passowrd:admin
 Core infrastructure:
 
 1. You can do this in any language. We dont care - language is just a tool. Work here is done primarily on python and reactjs (which you can learn if you join). At no point do we argue over the superiority of python over other languages. Its just a tool we ended up using and serves us well.
