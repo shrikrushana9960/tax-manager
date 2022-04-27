@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Role = require("./utils");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -7,10 +6,6 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   password: { type: String, required: true },
-  role: { type: Role, required: true },
-  taxPayerIds: { type: Array, required: false, default: [] },
-  stateId: { type: String, required: true },
-  panNumber: { type: String, required: true },
 });
 
 UserSchema.pre("save", function (next) {
